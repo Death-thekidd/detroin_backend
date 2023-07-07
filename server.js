@@ -37,6 +37,9 @@ app.use(
 
 const db = require("./app/models");
 const Role = db.role;
+const Wallet = db.wallet;
+const Plan = db.plan;
+const userWallet = db.userWallet;
 
 db.mongoose
 	.connect(
@@ -49,6 +52,8 @@ db.mongoose
 	.then(() => {
 		console.log("Successfully connect to MongoDB.");
 		initial();
+		walletAdd();
+		planAdd();
 	})
 	.catch((err) => {
 		console.error("Connection error", err);
@@ -78,9 +83,99 @@ async function initial() {
 	}
 }
 
+async function walletAdd() {
+	const walletArray = [
+		{
+			address: "bc1q6xtet3kzcxlegh0mskjvge00r3eyfuvv7k6w06",
+			name: "Bitcoin",
+		},
+		{
+			address: "0x7b7a4Fbf91931D9F78D791c2E1343B5087A6bd72",
+			name: "Ethereum",
+		},
+		{
+			address: "TDMLHf4ikazQt9VnpNwam9mLMkxdW5vsSV",
+			name: "Usdt Trc20",
+		},
+		{
+			address: "0x7b7a4Fbf91931D9F78D791c2E1343B5087A6bd72",
+			name: "Usdt Erc20",
+		},
+		{ address: "TDMLHf4ikazQt9VnpNwam9mLMkxdW5vsSV", name: "Tron" },
+		{
+			address: "ltc1qwhnd8my7nlyg04pel3xztjuenw49pqxeeczeul",
+			name: "Litecoin",
+		},
+		{
+			address: "P1073074977",
+			name: "Payeer",
+		},
+		{
+			address: "U37645106",
+			name: "Perfect Money",
+		},
+	];
+	try {
+		walletArray.map(async (wallet, index) => {
+			const { address, name } = wallet;
+			const existingWallet = await Wallet.findOne({ name });
+			if (!existingWallet) {
+				await new Wallet(wallet).save();
+				console.log(`added ${name} to wallets collection`);
+			}
+		});
+	} catch (err) {
+		console.log("error", err);
+	}
+}
+async function planAdd() {
+	const planArray = [
+		{
+			id: "starter",
+			name: "STARTING PLAN",
+			rate: "6",
+			min: "50",
+			max: "299",
+		},
+		{
+			id: "pro",
+			name: "PROFESSIONAL PLAN",
+			rate: "10",
+			min: "300",
+			max: "999",
+		},
+		{
+			id: "premium",
+			name: "PREMIUM PLAN",
+			rate: "14",
+			min: "1,000",
+			max: "9,999",
+		},
+		{
+			id: "vip",
+			name: "VIP-TRIL PLAN",
+			rate: "30",
+			min: "10,000",
+			max: "♾️",
+		},
+	];
+	try {
+		planArray.map(async (plan, index) => {
+			const { name } = plan;
+			const existingPlan = await Plan.findOne({ name });
+			if (!existingPlan) {
+				await new Plan(plan).save();
+				console.log(`added ${name} to plans collection`);
+			}
+		});
+	} catch (err) {
+		console.log("error", err);
+	}
+}
+
 // simple route
 app.get("/", (req, res) => {
-	res.json({ message: "Welcome to Coin Dash application." });
+	res.json({ message: "Welcome to Detroin Investments application." });
 });
 
 // routes
