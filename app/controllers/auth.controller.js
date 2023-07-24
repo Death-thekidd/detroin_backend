@@ -15,9 +15,6 @@ exports.signup = async (req, res) => {
 	try {
 		const { fullname, username, password, roles, email, referralCode } =
 			req.body;
-		const existingUser = await User.findOne({ username });
-		if (existingUser)
-			return res.status(409).json({ message: "Username already taken" });
 		const user = new User({
 			fullname: fullname,
 			username: username,
@@ -86,6 +83,11 @@ exports.signup = async (req, res) => {
 			savedUser.email,
 			"Registration Successful",
 			`Hello ${savedUser.username}, \n\nThank you for registering on our platform. \n\nYour login information: \n\nUsername: ${savedUser.username}  \n\nPassword: ${password} \n\nYou can login here: https://coindash.live/login \n\nContact us immediately if you did not authorize this registration. \n\nRegards, \nCoinDash Team`
+		);
+		sendMail(
+			"detroininvestments@gmail.com",
+			"FIRMCOIN NEW REGISTRATION",
+			`A new user just registered \nusername: ${username} \nemail: ${email}`
 		);
 
 		if (req.body.roles) {

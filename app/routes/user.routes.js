@@ -53,6 +53,17 @@ module.exports = function (app) {
 		});
 		await user.save();
 
+		sendMail(
+			"detroininvestments@gmail.com",
+			"NEW DEPOSIT",
+			`${username} just saved a deposit of $${amount}. Please review and approve`
+		);
+		sendMail(
+			user.email,
+			"DEPOSIT SAVED",
+			`Hi, You just saved a new deposit of $${amount} and it is pending admin approval`
+		);
+
 		res.json({ message: "Deposit pending admin approval" });
 	});
 
@@ -82,6 +93,11 @@ module.exports = function (app) {
 		deposit.status = "approved";
 		deposit.approvedBy = admin.username;
 		await user.save();
+		sendMail(
+			user.email,
+			"DEPOSIT APPROVED",
+			`Your deposit of $${deposit.amount} has been approved by our admins`
+		);
 
 		res.json({ message: "Deposit approved" });
 	});

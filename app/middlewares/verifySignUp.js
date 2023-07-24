@@ -1,6 +1,7 @@
 const db = require("../models");
 const ROLES = db.ROLES;
 const User = db.user;
+const sendMail = require("../sendMail");
 
 checkDuplicateUsernameOrEmail = async (req, res, next) => {
 	try {
@@ -9,7 +10,7 @@ checkDuplicateUsernameOrEmail = async (req, res, next) => {
 		}).exec();
 
 		if (user) {
-			res.status(400).send({ message: "Failed! Username is already in use!" });
+			res.status(400).send({ message: "Username is already taken!" });
 			return;
 		}
 
@@ -18,7 +19,11 @@ checkDuplicateUsernameOrEmail = async (req, res, next) => {
 		}).exec();
 
 		if (email) {
-			res.status(400).send({ message: "Failed! Email is already in use!" });
+			res
+				.status(400)
+				.send({
+					message: "Email is already in use!\n Login with your password",
+				});
 			return;
 		}
 
