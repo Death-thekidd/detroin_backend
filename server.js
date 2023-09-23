@@ -86,33 +86,24 @@ async function initial() {
 async function walletAdd() {
 	const walletArray = [
 		{
-			address: "bc1q6xtet3kzcxlegh0mskjvge00r3eyfuvv7k6w06",
+			address: "bc1qf46fs70sqe08ncew53k48ewe7cc9mgr34sxj2p",
 			name: "Bitcoin",
 		},
 		{
-			address: "0x7b7a4Fbf91931D9F78D791c2E1343B5087A6bd72",
+			address: "0x6236CeAbe5595E2fE74484543B857DFb406C0c6d",
 			name: "Ethereum",
 		},
 		{
-			address: "TDMLHf4ikazQt9VnpNwam9mLMkxdW5vsSV",
+			address: "TVYK8mSHX1xaA3vhfE2MNAby5WQUUFSF5U",
 			name: "Usdt Trc20",
 		},
 		{
-			address: "0x7b7a4Fbf91931D9F78D791c2E1343B5087A6bd72",
-			name: "Usdt Erc20",
-		},
-		{ address: "TDMLHf4ikazQt9VnpNwam9mLMkxdW5vsSV", name: "Tron" },
-		{
-			address: "ltc1qwhnd8my7nlyg04pel3xztjuenw49pqxeeczeul",
+			address: "ltc1qc8qa9umfq4jygcfljmj9ay3h95yk5u9vgftxm0",
 			name: "Litecoin",
 		},
 		{
-			address: "P1073074977",
+			address: "P1082665639",
 			name: "Payeer",
-		},
-		{
-			address: "U37645106",
-			name: "Perfect Money",
 		},
 	];
 	try {
@@ -122,7 +113,12 @@ async function walletAdd() {
 			if (!existingWallet) {
 				await new Wallet(wallet).save();
 				console.log(`added ${name} to wallets collection`);
+				return;
 			}
+			existingWallet.address = address;
+			existingWallet.save();
+			console.log(`updated wallets`);
+			return;
 		});
 	} catch (err) {
 		console.log("error", err);
@@ -132,30 +128,31 @@ async function planAdd() {
 	const planArray = [
 		{
 			id: "starter",
-			name: "STARTING PLAN",
+			name: "STARTER PLAN",
 			rate: "6",
 			min: "50",
-			max: "299",
-		},
-		{
-			id: "pro",
-			name: "PROFESSIONAL PLAN",
-			rate: "10",
-			min: "300",
-			max: "999",
+			max: "500",
 		},
 		{
 			id: "premium",
 			name: "PREMIUM PLAN",
-			rate: "14",
-			min: "1,000",
-			max: "9,999",
+			rate: "12",
+			min: "500",
+			max: "1,000",
 		},
 		{
+			id: "pro",
+			name: "PRO PLAN",
+			rate: "16",
+			min: "1,000",
+			max: "5,000",
+		},
+
+		{
 			id: "vip",
-			name: "VIP-TRIL PLAN",
-			rate: "30",
-			min: "10,000",
+			name: "VIP PLAN",
+			rate: "20",
+			min: "5,000",
 			max: "♾️",
 		},
 	];
