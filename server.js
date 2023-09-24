@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 const cookieSession = require("cookie-session");
 
 const sendEmail = require("./app/sendMail");
@@ -18,8 +17,6 @@ var corsOptions = {
 	},
 	credentials: true,
 };
-
-app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(express.json());
