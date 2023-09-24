@@ -12,25 +12,6 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [process.env.CLIENT_ORIGIN, "http://localhost:8081"];
-app.use(function (req, res, next) {
-	const origin = req.headers.origin;
-	if (allowedOrigins.includes(origin)) {
-		res.setHeader("Access-Control-Allow-Origin", origin);
-	}
-	res.setHeader("Access-Control-Allow-Credentials", true);
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	// another common pattern
-	// res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-	res.setHeader(
-		"Access-Control-Allow-Methods",
-		"GET,OPTIONS,PATCH,DELETE,POST,PUT"
-	);
-	res.setHeader(
-		"Access-Control-Allow-Headers",
-		"X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-	);
-	next();
-});
 
 app.use(
 	cookieSession({
