@@ -26,7 +26,7 @@ module.exports = function (app) {
 
 	app.get("/api/test/users", async (req, res) => {
 		const users = await User.find({});
-		res.json(users);
+		res.status(200).json(users);
 	});
 
 	app.post("/api/test/deposit", async (req, res) => {
@@ -59,7 +59,7 @@ module.exports = function (app) {
 			`Hi, You just saved a new deposit of $${amount} and it is pending admin approval`
 		);
 
-		res.json({ message: "Deposit pending admin approval" });
+		res.status(201).json({ message: "Deposit pending admin approval" });
 	});
 
 	app.post("/api/test/approve-deposit", async (req, res) => {
@@ -94,7 +94,7 @@ module.exports = function (app) {
 			`Your deposit of $${deposit.amount} has been approved by our admins`
 		);
 
-		res.json({ message: "Deposit approved" });
+		res.status(200).json({ message: "Deposit approved" });
 	});
 
 	app.post("/api/test/change-balance", async (req, res) => {
@@ -120,11 +120,11 @@ module.exports = function (app) {
 		});
 		await user.save();
 
-		res.json({ message: `${amount}` });
+		res.status(204).json({ message: `${amount}` });
 	});
 	app.get("/api/test/plans", async (req, res) => {
 		const plans = await Plan.find({});
-		res.json(plans);
+		res.status(200).json(plans);
 	});
 
 	app.post("/api/test/change-plan", async (req, res) => {
@@ -146,12 +146,12 @@ module.exports = function (app) {
 			});
 			await plan.save();
 		}
-		res.json({ message: "Plan Updated Succesfully" });
+		res.status(204).json({ message: "Plan Updated Succesfully" });
 	});
 
 	app.get("/api/test/wallets", async (req, res) => {
 		const wallets = await Wallet.find({});
-		res.json(wallets);
+		res.status(200).json(wallets);
 	});
 
 	app.post("/api/test/change-wallet", async (req, res) => {
@@ -170,6 +170,6 @@ module.exports = function (app) {
 				await newWallet.save();
 			}
 		});
-		res.json({ message: "Wallet Updated Succesfully" });
+		res.status(204).json({ message: "Wallet Updated Succesfully" });
 	});
 };
