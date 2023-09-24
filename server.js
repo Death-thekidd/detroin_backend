@@ -11,6 +11,14 @@ app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+	res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
+	res.header(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept"
+	);
+	next();
+});
 
 app.use(
 	cookieSession({
