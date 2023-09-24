@@ -2,7 +2,7 @@ const { verifySignUp } = require("../middlewares");
 const controller = require("../controllers/auth.controller");
 
 const allowedOrigins = [process.env.CLIENT_ORIGIN, "http://localhost:8081"];
-const cors = require(cors());
+const cors = require("cors");
 
 module.exports = function (app) {
 	app.use(cors());
