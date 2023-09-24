@@ -1,23 +1,7 @@
 const { verifySignUp } = require("../middlewares");
 const controller = require("../controllers/auth.controller");
 
-const allowedOrigins = [process.env.CLIENT_ORIGIN, "http://localhost:8081"];
-const cors = require("cors");
-
 module.exports = function (app) {
-	app.use(cors());
-	app.use(function (req, res, next) {
-		const origin = req.headers.origin;
-		if (allowedOrigins.includes(origin)) {
-			res.header("Access-Control-Allow-Origin", origin);
-		}
-		res.header(
-			"Access-Control-Allow-Headers",
-			"Origin, X-Requested-With, Content-Type, Accept"
-		);
-		next();
-	});
-
 	app.post(
 		"/api/auth/signup",
 		[

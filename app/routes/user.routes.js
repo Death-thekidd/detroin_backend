@@ -1,7 +1,6 @@
 const { authJwt } = require("../middlewares");
 const controller = require("../controllers/user.controller");
 const config = require("../config/auth.config");
-const cors = require("cors");
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
@@ -9,18 +8,6 @@ const Plan = db.plan;
 const Wallet = db.wallet;
 
 module.exports = function (app) {
-	app.use(cors());
-	app.use(function (req, res, next) {
-		const origin = req.headers.origin;
-		if (allowedOrigins.includes(origin)) {
-			res.header("Access-Control-Allow-Origin", origin);
-		}
-		res.header(
-			"Access-Control-Allow-Headers",
-			"Origin, X-Requested-With, Content-Type, Accept"
-		);
-		next();
-	});
 	app.get("/api/test/all", controller.allAccess);
 
 	app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);

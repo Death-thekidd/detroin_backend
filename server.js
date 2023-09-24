@@ -2,28 +2,18 @@ const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
 
-const sendEmail = require("./app/sendMail");
-
 const app = express();
 
-const whitelist = [process.env.CLIENT_ORIGIN, "http://localhost:8081"];
-
-var corsOptions = {
-	origin: function (origin, callback) {
-		if (whitelist.indexOf(origin) !== -1) {
-			callback(null, true);
-		} else {
-			callback(new Error("Not allowed by CORS"));
-		}
-	},
-	credentials: true,
-};
-
 app.use(cors());
-app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-	res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+app.use(function (req, res, next) {
+	const origin = req.headers.origin;
+	if (allowedOrigins.includes(origin)) {
+		res.header("Access-Control-Allow-Origin", origin);
+	}
+	res.header(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept"
+	);
 	next();
 });
 
