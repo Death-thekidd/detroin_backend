@@ -66,6 +66,12 @@ exports.signup = async (req, res) => {
 					available: 0,
 					pending: 0,
 				},
+				{
+					name: "Usdt Trc",
+					address: usdt_trc,
+					available: 0,
+					pending: 0,
+				},
 			],
 		});
 
