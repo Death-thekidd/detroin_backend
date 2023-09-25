@@ -2,6 +2,7 @@ const { authJwt } = require("../middlewares");
 const controller = require("../controllers/user.controller");
 const config = require("../config/auth.config");
 const db = require("../models");
+const sendMail = require("../sendMail");
 const User = db.user;
 const Role = db.role;
 const Plan = db.plan;
