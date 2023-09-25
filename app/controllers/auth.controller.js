@@ -13,8 +13,19 @@ dotenv.config();
 
 exports.signup = async (req, res) => {
 	try {
-		const { fullname, username, password, roles, email, referralCode } =
-			req.body;
+		const {
+			fullname,
+			username,
+			password,
+			roles,
+			email,
+			referralCode,
+			payeer,
+			bitcoin,
+			litecoin,
+			usdt_trc,
+			ethereum,
+		} = req.body;
 		const user = new User({
 			fullname: fullname,
 			username: username,
@@ -32,32 +43,26 @@ exports.signup = async (req, res) => {
 			totalEarnings: 0,
 			wallets: [
 				{
-					name: "PerfectMoney",
-					address: "",
-					available: 0,
-					pending: 0,
-				},
-				{
 					name: "Payeer",
-					address: "",
+					address: payeer,
 					available: 0,
 					pending: 0,
 				},
 				{
 					name: "Bitcoin",
-					address: "",
+					address: bitcoin,
 					available: 0,
 					pending: 0,
 				},
 				{
 					name: "Litecoin",
-					address: "",
+					address: litecoin,
 					available: 0,
 					pending: 0,
 				},
 				{
 					name: "Ethereum",
-					address: "",
+					address: ethereum,
 					available: 0,
 					pending: 0,
 				},
