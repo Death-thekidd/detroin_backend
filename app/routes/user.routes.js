@@ -164,22 +164,19 @@ module.exports = function (app) {
 
 	app.post("/api/test/update-user", async (req, res) => {
 		const updatedUserData = req.body;
-		User.findOneAndUpdate(
-			{ _id: updatedUserData._id }, // Replace with the appropriate unique identifier
-			{ $set: updatedUserData }, // Use $set to update all fields in the user document
-			{ new: true }, // Set new: true to return the updated user object
-			(err, updatedUser) => {
-				if (err) {
-					return res.status(500).json({ message: "Internal Server Error" });
-				}
-
-				if (!updatedUser) {
-					return res.status(404).json({ message: "User not found" });
-				}
-
-				return res.status(200).json({ data: updatedUser });
+		try {
+			const updatedUser = await User.findOneAndUpdate(
+				{ _id: updatedUserData._id }, // Replace with the appropriate unique identifier
+				{ $set: updatedUserData }, // Use $set to update all fields in the user document
+				{ new: true } // Set new: true to return the updated user object
+			);
+			if (!updatedUser) {
+				return res.status(404).json({ message: "User not found" });
 			}
-		);
+			return res.status(200).json({ data: updatedUser });
+		} catch (error) {
+			return res.status(500).json({ message: "Internal Server Error" });
+		}
 	});
 
 	app.post("/api/test/request-withdrawal", async (req, res) => {});
