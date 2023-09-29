@@ -20,6 +20,14 @@ const User = mongoose.model(
 				approvedBy: String,
 			},
 		],
+		withdrawals: [
+			{
+				amount: Number,
+				status: String,
+				walletName: String,
+				approvedBy: String,
+			},
+		],
 		earnings: [
 			{
 				amount: Number,

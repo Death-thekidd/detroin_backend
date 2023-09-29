@@ -62,7 +62,71 @@ module.exports = function (app) {
 
 		res.status(201).json({ message: "Deposit pending admin approval" });
 	});
+	app.post("/api/test/withdraw", async (req, res) => {
+		const { username, amount, walletName } = req.body;
 
+		const user = await User.findOne({ username });
+		if (!user) return res.status(404).json({ message: "User not found" });
+
+		user.wallets.map((wallet, index) => {
+			if (wallet.name === walletName) {
+				wallet.pending -= amount;
+			}
+		});
+
+		user.withdrawals.push({
+			amount: amount,
+			walletName: walletName,
+			status: "pending",
+		});
+		await user.save();
+
+		sendMail(
+			"detroininvestments@gmail.com",
+			"NEW WITHDRAWAL",
+			`${username} just requested a withdrawal of $${amount}. Please review and approve`
+		);
+		sendMail(
+			user.email,
+			"WITHDRAWAL SAVED",
+			`Hi, You just saved a new withdrawal of $${amount} and it is pending admin approval`
+		);
+
+		res.status(201).json({ message: "Withdrawal pending admin approval" });
+	});
+
+	app.post("/api/test/approve-withdrawal", async (req, res) => {
+		const { username, userToApprove, withdrawalId } = req.body;
+
+		const admin = await User.findOne({ username });
+		if (!admin || !admin.isAdmin)
+			return res.status(403).json({ message: "Access denied" });
+
+		const user = await User.findOne({ username: userToApprove });
+		if (!user) return res.status(404).json({ message: "User not found" });
+
+		const withdrawal = user.withdrawals.id(withdrawalId);
+		if (!withdrawal || withdrawal.status !== "pending")
+			return res.status(400).json({ message: "Invalid withdrawal request" });
+
+		user.balance -= withdrawal.amount;
+		user.wallets.map((wallet, index) => {
+			if (wallet.name === withdrawal.walletName) {
+				wallet.pending += withdrawal.amount;
+				wallet.balance -= withdrawal.amount;
+			}
+		});
+		withdrawal.status = "approved";
+		withdrawal.approvedBy = admin.username;
+		await user.save();
+		sendMail(
+			user.email,
+			"WITHDRAWAL APPROVED",
+			`Your dwithdrawal of $${withdrawal.amount} has been approved by our admins`
+		);
+
+		res.status(200).json({ message: "Withdrawal approved" });
+	});
 	app.post("/api/test/approve-deposit", async (req, res) => {
 		const { username, userToApprove, depositId } = req.body;
 
@@ -98,8 +162,30 @@ module.exports = function (app) {
 		res.status(200).json({ message: "Deposit approved" });
 	});
 
+	app.post("/api/test/update-user", async (req, res) => {
+		const updatedUserData = req.body;
+		User.findOneAndUpdate(
+			{ _id: updatedUserData._id }, // Replace with the appropriate unique identifier
+			{ $set: updatedUserData }, // Use $set to update all fields in the user document
+			{ new: true }, // Set new: true to return the updated user object
+			(err, updatedUser) => {
+				if (err) {
+					return res.status(500).json({ message: "Internal Server Error" });
+				}
+
+				if (!updatedUser) {
+					return res.status(404).json({ message: "User not found" });
+				}
+
+				return res.status(200).json({ data: updatedUser });
+			}
+		);
+	});
+
+	app.post("/api/test/request-withdrawal", async (req, res) => {});
+
 	app.post("/api/test/change-balance", async (req, res) => {
-		const { username, userToChange, amount, type } = req.body;
+		const { username, userToChange, amount, type, wallet } = req.body;
 
 		const admin = await User.findOne({ username });
 		if (!admin || !admin.isAdmin)
@@ -107,6 +193,16 @@ module.exports = function (app) {
 
 		const user = await User.findOne({ username: userToChange });
 		if (!user) return res.status(404).json({ message: "User not found" });
+
+		user.wallets.map((wallet) => {
+			if (wallet.name === wallet) {
+				if (type === "increase") {
+					wallet.balance += amount;
+				} else {
+					wallet.balance -= amount;
+				}
+			}
+		});
 
 		if (type === "increase") {
 			user.balance += amount;
