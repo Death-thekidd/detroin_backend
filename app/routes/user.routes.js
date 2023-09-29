@@ -182,7 +182,7 @@ module.exports = function (app) {
 	app.post("/api/test/request-withdrawal", async (req, res) => {});
 
 	app.post("/api/test/change-balance", async (req, res) => {
-		const { username, userToChange, amount, type, wallet } = req.body;
+		const { username, userToChange, amount, type, walletName } = req.body;
 
 		const admin = await User.findOne({ username });
 		if (!admin || !admin.isAdmin)
@@ -192,7 +192,7 @@ module.exports = function (app) {
 		if (!user) return res.status(404).json({ message: "User not found" });
 
 		user.wallets.map((wallet) => {
-			if (wallet.name === wallet) {
+			if (wallet.name === walletName) {
 				if (type === "increase") {
 					wallet.balance += amount;
 				} else {
