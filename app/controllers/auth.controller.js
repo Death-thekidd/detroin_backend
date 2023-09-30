@@ -96,7 +96,7 @@ exports.signup = async (req, res) => {
 			`Hello ${savedUser.username}, \n\nThank you for registering on our platform. \n\nYour login information: \n\nUsername: ${savedUser.username}  \n\nPassword: ${password} \n\nYou can login here: https://coindash.live/login \n\nContact us immediately if you did not authorize this registration. \n\nRegards, \nCoinDash Team`
 		);
 		sendMail(
-			"detroininvestments@gmail.com",
+			"detroininvestment72@gmail.com",
 			"FIRMCOIN NEW REGISTRATION",
 			`A new user just registered \nusername: ${username} \nemail: ${email}`
 		);
@@ -146,6 +146,7 @@ exports.signin = async (req, res) => {
 		req.session.token = token;
 
 		res.status(200).send({
+			...user,
 			id: user._id,
 			fullname: user.fullname,
 			username: user.username,
