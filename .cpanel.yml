@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/dtkappco/public_html/detroin-backend/
+    - /bin/cp -R . $DEPLOYPATH
