@@ -93,7 +93,7 @@ exports.signup = async (req, res) => {
 		sendMail(
 			savedUser.email,
 			"Registration Successful",
-			`Hello ${savedUser.username}, \n\nThank you for registering on our platform. \n\nYour login information: \n\nUsername: ${savedUser.username}  \n\nPassword: ${password} \n\nYou can login here: https://detroininvestment.live/login \n\nContact us immediately if you did not authorize this registration. \n\nRegards, \nCoinDash Team`
+			`Hello ${savedUser.username}, \n\nThank you for registering on our platform. \n\nYour login information: \n\nUsername: ${savedUser.username}  \n\nPassword: ${password} \n\nYou can login here: https://detroininvestment.live/login \n\nContact us immediately if you did not authorize this registration. \n\nRegards, \nDetroin Investment Team`
 		);
 		sendMail(
 			"detroininvestment72@gmail.com",
