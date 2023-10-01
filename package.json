@@ -2,7 +2,7 @@
 	"name": "coin-dash",
 	"version": "1.0.0",
 	"engines": {
-		"node": "18.x"
+		"node": ">=14.0.0"
 	},
 	"description": "Nodejs app for coin-dash",
 	"main": "server.js",
