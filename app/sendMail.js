@@ -26,8 +26,6 @@ async function sendMail(to, subject, text) {
 		text: text, // plain text body
 	};
 
-	console.log(mailOptions);
-
 	try {
 		// Get response from the createTransport
 		let emailTransporter = await createTransporter();

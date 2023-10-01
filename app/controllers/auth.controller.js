@@ -89,7 +89,6 @@ exports.signup = async (req, res) => {
 				await referrer.save();
 			}
 		}
-		console.log(sendMail);
 		sendMail(
 			savedUser.email,
 			"Registration Successful",
