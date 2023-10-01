@@ -8,7 +8,6 @@ const createTransporter = async () => {
 	const transporter = nodemailer.createTransport({
 		host: "detroininvestment.dtkapp.com.ng",
 		port: 465,
-		secure: true,
 		auth: {
 			user: process.env.SENDER_EMAIL,
 			pass: process.env.SENDER_PASS,
