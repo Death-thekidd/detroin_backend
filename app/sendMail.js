@@ -12,6 +12,7 @@ const client = Sib.ApiClient.instance;
 
 const apiKey = client.authentications["api-key"];
 apiKey.apiKey = process.env.API_KEY;
+console.log(process.env.API_KEY);
 const tranEmailApi = new Sib.TransactionalEmailsApi();
 
 async function sendMail(receivers, subject, text) {
