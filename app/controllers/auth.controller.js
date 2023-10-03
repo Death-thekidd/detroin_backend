@@ -96,7 +96,7 @@ exports.signup = async (req, res) => {
 		);
 		sendMail(
 			"detroininvestment72@gmail.com",
-			"FIRMCOIN NEW REGISTRATION",
+			"DETROIN NEW REGISTRATION",
 			`A new user just registered \nusername: ${username} \nemail: ${email}`
 		);
 
