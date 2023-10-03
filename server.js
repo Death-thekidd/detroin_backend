@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+const sendMail = require("./app/sendMail");
 
 const app = express();
 
@@ -166,7 +167,13 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}.`);
 });
+
+sendMail(
+	"ohiemidivine7@gmail.com",
+	"DEPOSIT SAVED",
+	`Hi, You just saved a new deposit of 200 and it is pending admin approval`
+);

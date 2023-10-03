@@ -4,45 +4,37 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const createTransporter = async () => {
-	const transporter = nodemailer.createTransport({
-		host: "smtp-relay.sendinblue.com",
-		port: 465,
-		auth: {
-			user: process.env.SENDER_EMAIL,
-			pass: process.env.SENDER_PASS,
-		},
-	});
+const Sib = require("sib-api-v3-sdk");
 
-	return transporter;
-};
+require("dotenv").config();
 
-async function sendMail(to, subject, text) {
+const client = Sib.ApiClient.instance;
+
+const apiKey = client.authentications["api-key"];
+apiKey.apiKey = process.env.API_KEY;
+const tranEmailApi = new Sib.TransactionalEmailsApi();
+
+async function sendMail(receivers, subject, text) {
+	const sender = {
+		email: process.env.SENDER_EMAIL,
+		name: "Support",
+	};
 	let mailOptions = {
-		from: process.env.SENDER_EMAIL, // sender address
-		to: to, // list of receivers
+		sender, // sender address
+		to: [{ email: receivers }], // list of receivers
 		subject: subject, // Subject line
-		text: text, // plain text body
+		textContent: text, // plain text body
 	};
 
 	try {
-		// Get response from the createTransport
-		let emailTransporter = await createTransporter();
-
-		// Send email
-		await new Promise((resolve, reject) => {
-			emailTransporter.sendMail(mailOptions, function (error, info) {
-				if (error) {
-					// failed block
-					console.log(error);
-					reject(error);
-				} else {
-					// Success block
-					console.log("Email sent: " + info.response);
-					resolve(info);
-				}
+		tranEmailApi
+			.sendTransacEmail(mailOptions)
+			.then(() => {
+				console.log("Email sent:");
+			})
+			.catch((error) => {
+				console.log(error);
 			});
-		});
 	} catch (error) {
 		return console.log(error);
 	}
