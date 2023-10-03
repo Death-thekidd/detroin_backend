@@ -6,8 +6,8 @@ dotenv.config();
 
 const createTransporter = async () => {
 	const transporter = nodemailer.createTransport({
-		host: "detroininvestment.dtkapp.com.ng",
-		port: 465,
+		host: "smtp-relay.brevo.com",
+		port: 587,
 		auth: {
 			user: process.env.SENDER_EMAIL,
 			pass: process.env.SENDER_PASS,
