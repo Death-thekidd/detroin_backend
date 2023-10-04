@@ -169,7 +169,7 @@ module.exports = function (app) {
 			users?.map((user) => {
 				user?.deposits?.map(async (deposit) => {
 					if (deposit?.status === "approved" && deposit?.plan) {
-						const plan = await Plan.findOne({ name: deposit.plan });
+						const plan = await Plan.findOne({ id: deposit.plan });
 						const profit = (Number(plan?.rate) / 100) * Number(deposit?.amount);
 						user?.balance += profit;
 						user?.wallets?.map((wallet) => {if (wallet?.name === deposit?.walletName){
