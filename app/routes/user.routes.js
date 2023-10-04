@@ -163,7 +163,7 @@ module.exports = function (app) {
 		res.status(200).json({ message: "Deposit approved" });
 	});
 
-	app.post("/api/test/add-profit", async (req, res) => {
+	app.use("/api/test/add-profit", async (req, res) => {
 		try {
 			const users = await User.find({});
 			users?.map((user) => {
