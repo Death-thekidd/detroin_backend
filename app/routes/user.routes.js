@@ -171,10 +171,12 @@ module.exports = function (app) {
 					if (deposit?.status === "approved" && deposit?.plan) {
 						const plan = await Plan.findOne({ id: deposit.plan });
 						const profit = (Number(plan?.rate) / 100) * Number(deposit?.amount);
-						user?.balance += profit;
-						user?.wallets?.map((wallet) => {if (wallet?.name === deposit?.walletName){
-							wallet.available += profit;
-						}})
+						user.balance = user.balance + profit;
+						user?.wallets?.map((wallet) => {
+							if (wallet?.name === deposit?.walletName) {
+								wallet.available += profit;
+							}
+						});
 						await user.save();
 					}
 				});
