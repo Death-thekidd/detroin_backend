@@ -15,5 +15,12 @@
 				"Access-Control-Allow-Origin": "*"
 			}
 		}
+	],
+	"crons": [
+		{
+			"path": "/app/crons/addProfit.js",
+
+			"schedule": "0 10 * * *"
+		}
 	]
 }
