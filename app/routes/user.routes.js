@@ -168,6 +168,7 @@ module.exports = function (app) {
 			const users = await User.find({});
 			users?.map((user) => {
 				user?.deposits?.map(async (deposit) => {
+					console.log(deposit?.plan, deposit?.status, user.username);
 					if (deposit?.status === "approved" && deposit?.plan) {
 						console.log("Hmm");
 						const plan = await Plan.findOne({ id: deposit.plan });
