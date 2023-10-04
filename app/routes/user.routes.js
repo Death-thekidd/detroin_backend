@@ -148,7 +148,7 @@ module.exports = function (app) {
 		user.wallets.map((wallet, index) => {
 			if (wallet.name === deposit.walletName) {
 				wallet.pending -= deposit.amount;
-				wallet.balance += deposit.amount;
+				wallet.available += deposit.amount;
 			}
 		});
 		user.totalDeposits += deposit.amount;
