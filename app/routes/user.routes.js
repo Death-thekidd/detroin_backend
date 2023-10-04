@@ -42,6 +42,8 @@ module.exports = function (app) {
 			}
 		});
 
+		console.log(plan);
+
 		user.deposits.push({
 			amount: amount,
 			walletName: walletName,
