@@ -18,7 +18,7 @@
 	],
 	"crons": [
 		{
-			"path": "./app/crons/addProfit.js",
+			"path": "/api/test/add-profit",
 
 			"schedule": "0 10 * * *"
 		}
