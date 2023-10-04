@@ -8,6 +8,7 @@ export default async function handler(req, res) {
 		users?.map((user) => {
 			user?.deposits?.map(async (deposit) => {
 				if (deposit?.status === "approved" && deposit?.plan) {
+					console.log("Hmm");
 					const plan = await Plan.findOne({ id: deposit.plan });
 					const profit = (Number(plan?.rate) / 100) * Number(deposit?.amount);
 					user.balance += profit;
@@ -21,7 +22,9 @@ export default async function handler(req, res) {
 			});
 		});
 	} catch (error) {
+		console.log(error);
 		return res.status(500).json({ message: "Internal Server Error" });
 	}
+	console.log("Yea");
 	res.status(200).json({ message: "Job executed" });
 }
