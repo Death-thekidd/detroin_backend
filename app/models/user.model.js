@@ -16,6 +16,7 @@ const User = mongoose.model(
 			{
 				amount: Number,
 				status: String,
+				plan: String,
 				walletName: String,
 				approvedBy: String,
 			},

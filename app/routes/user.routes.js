@@ -31,7 +31,7 @@ module.exports = function (app) {
 	});
 
 	app.post("/api/test/deposit", async (req, res) => {
-		const { username, amount, walletName } = req.body;
+		const { username, amount, walletName, plan } = req.body;
 
 		const user = await User.findOne({ username });
 		if (!user) return res.status(404).json({ message: "User not found" });
@@ -45,6 +45,7 @@ module.exports = function (app) {
 		user.deposits.push({
 			amount: amount,
 			walletName: walletName,
+			plan: plan,
 			status: "pending",
 		});
 		await user.save();
@@ -160,6 +161,28 @@ module.exports = function (app) {
 		);
 
 		res.status(200).json({ message: "Deposit approved" });
+	});
+
+	app.post("/api/test/add-profit", async (req, res) => {
+		try {
+			const users = await User.find({});
+			users?.map((user) => {
+				user?.deposits?.map(async (deposit) => {
+					if (deposit?.status === "approved" && deposit?.plan) {
+						const plan = await Plan.findOne({ name: deposit.plan });
+						const profit = (Number(plan?.rate) / 100) * Number(deposit?.amount);
+						user?.balance += profit;
+						user?.wallets?.map((wallet) => {if (wallet?.name === deposit?.walletName){
+							wallet.available += profit;
+						}})
+						await user.save();
+					}
+				});
+			});
+		} catch (error) {
+			return res.status(500).json({ message: "Internal Server Error" });
+		}
+		res.status(200).json({ message: "Job executed" });
 	});
 
 	app.post("/api/test/update-user", async (req, res) => {
