@@ -179,8 +179,10 @@ module.exports = function (app) {
 						user?.wallets?.map((wallet) => {
 							if (wallet?.name === deposit?.walletName) {
 								wallet.available += profit;
+								console.log(wallet.available);
 							}
 						});
+						console.log(user.balance);
 						await user.save();
 					}
 				});
