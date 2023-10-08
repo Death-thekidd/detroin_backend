@@ -168,25 +168,25 @@ module.exports = function (app) {
 	app.use("/api/test/add-profit", async (req, res) => {
 		try {
 			const users = await User.find({});
-			users?.map((user) => {
-				user?.deposits?.map(async (deposit) => {
-					console.log(deposit?.plan, deposit?.status, user.username);
-					if (deposit?.status === "approved" && deposit?.plan) {
+			for (const user of users) {
+				for (const deposit of user.deposits) {
+					console.log(deposit.plan, deposit.status, user.username);
+					if (deposit.status === "approved" && deposit.plan) {
 						console.log("Hmm");
 						const plan = await Plan.findOne({ id: deposit.plan });
-						const profit = (Number(plan?.rate) / 100) * Number(deposit?.amount);
+						const profit = (Number(plan.rate) / 100) * Number(deposit.amount);
 						user.balance = user.balance + profit;
-						user?.wallets?.map((wallet) => {
-							if (wallet?.name === deposit?.walletName) {
+						for (const wallet of user.wallets) {
+							if (wallet.name === deposit.walletName) {
 								wallet.available += profit;
 								console.log(wallet.available);
 							}
-						});
+						}
 						console.log(user.balance);
 						await user.save();
 					}
-				});
-			});
+				}
+			}
 		} catch (error) {
 			console.log(error);
 			return res.status(500).json({ message: "Internal Server Error" });
