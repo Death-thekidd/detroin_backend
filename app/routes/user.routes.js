@@ -121,6 +121,8 @@ module.exports = function (app) {
 		});
 		withdrawal.status = "approved";
 		withdrawal.approvedBy = admin.username;
+		user.lastWithdrawal = withdrawal.amount;
+		user.totalWithdrawals = user.withdrawals.reduce((acc, withdrawal)=>(acc+withdrawal.amount), 0);
 		await user.save();
 		sendMail(
 			user.email,
