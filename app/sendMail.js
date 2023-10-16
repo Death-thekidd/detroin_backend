@@ -18,7 +18,7 @@ const tranEmailApi = new Sib.TransactionalEmailsApi();
 async function sendMail(receivers, subject, text) {
 	const sender = {
 		email: process.env.SENDER_EMAIL,
-		name: "Support",
+		name: "Detroin Support",
 	};
 	let mailOptions = {
 		sender, // sender address
